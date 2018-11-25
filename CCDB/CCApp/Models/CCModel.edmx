@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CCDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sesh">
+          <Key>
+            <PropertyRef Name="SeshID" />
+          </Key>
+          <Property Name="SeshID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Time" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Venue" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Shout">
+          <Key>
+            <PropertyRef Name="SeshToShout" />
+            <PropertyRef Name="Shouter" />
+          </Key>
+          <Property Name="SeshToShout" Type="int" Nullable="false" />
+          <Property Name="Shouter" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Amount" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK_SESH">
+          <End Role="Sesh" Type="Self.Sesh" Multiplicity="1" />
+          <End Role="Shout" Type="Self.Shout" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sesh">
+              <PropertyRef Name="SeshID" />
+            </Principal>
+            <Dependent Role="Shout">
+              <PropertyRef Name="SeshToShout" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SHOUTER">
+          <End Role="Member" Type="Self.Member" Multiplicity="1" />
+          <End Role="Shout" Type="Self.Shout" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="Shout">
+              <PropertyRef Name="Shouter" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CCDBModelStoreContainer">
+          <EntitySet Name="Member" EntityType="Self.Member" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sesh" EntityType="Self.Sesh" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Shout" EntityType="Self.Shout" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_SESH" Association="Self.FK_SESH">
+            <End Role="Sesh" EntitySet="Sesh" />
+            <End Role="Shout" EntitySet="Shout" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SHOUTER" Association="Self.FK_SHOUTER">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="Shout" EntitySet="Shout" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CCDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Shouts" Relationship="Self.FK_SHOUTER" FromRole="Member" ToRole="Shout" />
+        </EntityType>
+        <EntityType Name="Sesh">
+          <Key>
+            <PropertyRef Name="SeshID" />
+          </Key>
+          <Property Name="SeshID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Time" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Venue" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Shouts" Relationship="Self.FK_SESH" FromRole="Sesh" ToRole="Shout" />
+        </EntityType>
+        <EntityType Name="Shout">
+          <Key>
+            <PropertyRef Name="SeshToShout" />
+            <PropertyRef Name="Shouter" />
+          </Key>
+          <Property Name="SeshToShout" Type="Int32" Nullable="false" />
+          <Property Name="Shouter" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Amount" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Member" Relationship="Self.FK_SHOUTER" FromRole="Shout" ToRole="Member" />
+          <NavigationProperty Name="Sesh" Relationship="Self.FK_SESH" FromRole="Shout" ToRole="Sesh" />
+        </EntityType>
+        <Association Name="FK_SHOUTER">
+          <End Role="Member" Type="Self.Member" Multiplicity="1" />
+          <End Role="Shout" Type="Self.Shout" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="Shout">
+              <PropertyRef Name="Shouter" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SESH">
+          <End Role="Sesh" Type="Self.Sesh" Multiplicity="1" />
+          <End Role="Shout" Type="Self.Shout" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sesh">
+              <PropertyRef Name="SeshID" />
+            </Principal>
+            <Dependent Role="Shout">
+              <PropertyRef Name="SeshToShout" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CCDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Members" EntityType="Self.Member" />
+          <EntitySet Name="Seshes" EntityType="Self.Sesh" />
+          <EntitySet Name="Shouts" EntityType="Self.Shout" />
+          <AssociationSet Name="FK_SHOUTER" Association="Self.FK_SHOUTER">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Shout" EntitySet="Shouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SESH" Association="Self.FK_SESH">
+            <End Role="Sesh" EntitySet="Seshes" />
+            <End Role="Shout" EntitySet="Shouts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CCDBModelStoreContainer" CdmEntityContainer="CCDBEntities">
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="CCDBModel.Member">
+              <MappingFragment StoreEntitySet="Member">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Seshes">
+            <EntityTypeMapping TypeName="CCDBModel.Sesh">
+              <MappingFragment StoreEntitySet="Sesh">
+                <ScalarProperty Name="SeshID" ColumnName="SeshID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Venue" ColumnName="Venue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Shouts">
+            <EntityTypeMapping TypeName="CCDBModel.Shout">
+              <MappingFragment StoreEntitySet="Shout">
+                <ScalarProperty Name="SeshToShout" ColumnName="SeshToShout" />
+                <ScalarProperty Name="Shouter" ColumnName="Shouter" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

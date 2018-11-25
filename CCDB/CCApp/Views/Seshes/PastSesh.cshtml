@@ -1,0 +1,45 @@
+﻿@model IEnumerable<CCApp.Models.Sesh>
+
+@{
+    ViewBag.Title = "PastSesh";
+}
+
+<h2>PAST SESHES</h2>
+
+<p>
+    @Html.ActionLink("Go back to upcoming seshes", "Index")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Venue)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Venue)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "PastEdit", new { id=item.SeshID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.SeshID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.SeshID })
+        </td>
+    </tr>
+}
+
+</table>

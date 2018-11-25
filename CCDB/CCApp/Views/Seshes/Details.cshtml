@@ -1,0 +1,60 @@
+﻿@model CCApp.Models.DetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Sesh</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Sesh ID Number:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Seshes.SeshID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Seshes.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Seshes.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Seshes.Time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Seshes.Time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Seshes.Venue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Seshes.Venue)
+        </dd>
+
+        <dd>
+            @Html.DisplayFor(model => model.Shouter)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Shouter)
+        </dt>
+
+
+
+    </dl>
+    <p>@Html.ActionLink("Who's shouting?", "Create", "Shouts")</p>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Seshes.SeshID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
